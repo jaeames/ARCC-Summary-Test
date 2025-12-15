@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>ARCC 3.2 Test</title>
+  <title>ARCC</title>
 
 <!-- ===================== -->
 <!--  CSS STYLES START  -->
@@ -1112,7 +1112,7 @@
         <h2>Suggested Adjustments</h2>
         <div class="adjustments-controls">
             <button id="toggle-all-details" class="toggle-details">Show All Details</button>
-            <input type="text" id="adjustment-search" placeholder="Search adjustments...">
+            <input type="text" id="adjustment-search" placeholder="Search adjustments..." aria-label="Search adjustments">
         </div>
       </div>
 
@@ -3166,7 +3166,7 @@ interactiveEls.forEach(el => {
     })();
 </script>
 
-<input type="file" id="load-file" accept=".txt,.json" style="display:none">
+<input type="file" id="load-file" accept=".txt,.json" aria-label="Load adjustments from file" hidden>
 
 </body>
 </html>
