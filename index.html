@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>ARCC</title>
+  <title>ARCC 3.2 Test</title>
 
 <!-- ===================== -->
 <!--  CSS STYLES START  -->
@@ -767,6 +767,25 @@
     background-color: #fff;
     }
 
+    .close {
+      background: transparent;
+      border: none;
+      padding: 0.5rem;
+      font-size: 1.5rem;
+      line-height: 1;
+      cursor: pointer;
+      color: #888;
+    }
+
+    .close:hover {
+      color: #444;
+    }
+
+    .close:focus-visible {
+      outline: 2px solid #5b9dd9;
+      outline-offset: 2px;
+    }
+
     /* === Toggle Pill Buttons === */
 
     .toggle-pill {
@@ -976,7 +995,14 @@
   <span class="material-icons" aria-hidden="true">filter_alt</span>
 </button>
 
-<button id="settingsToggle" class="fab settings-fab" aria-label="Open Settings">
+<!-- Floating Settings button -->
+<button
+  id="settingsToggle"
+  class="fab settings-fab"
+  aria-haspopup="dialog"
+  aria-controls="settingsModal"
+  aria-label="Open settings"
+>
   <span class="material-icons" aria-hidden="true">settings</span>
 </button>
 
@@ -1106,10 +1132,10 @@
 </div> <!-- end of layout-container -->
 
     <!-- Quiz Modal -->
-    <div id="quiz-modal" class="modal hidden">
+    <div id="quiz-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="quiz-title">
         <div class="modal-content">
-          <span class="close" onclick="closeModal('quiz-modal')">&times;</span>
-          <h3>Quick Quiz</h3>
+          <button type="button" class="close" onclick="closeModal()" aria-label="Close quiz">&times;</button>
+          <h3 id="quiz-title">Quick Quiz</h3>
       
           <p><strong>1. When you're writing or typing up documentation (or essays), what's hardest for you?</strong></p>
           <label><input type="radio" name="write" value="write_structure"> Organising my thoughts into a clear structure</label><br>
@@ -1170,16 +1196,16 @@
           <label><input type="radio" name="space" value="space_label_numbers"> Needing to read numerical info quickly</label><br>
           <label><input type="radio" name="space" value="space_label_words"> Labels are small/blurry/poorly spaced</label><br><br>
       
-          <button onclick="generateRecommendations()">See My Suggestions</button>
+          <button onclick="handleQuizComplete()">See My Suggestions</button>
         </div>
       </div>
       
     
   <!-- Recommendations Modal -->
-    <div id="recommendations-modal" class="modal hidden">
+    <div id="recommendations-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="recommendations-title">
         <div class="modal-content">
-        <span class="close" onclick="closeModal('recommendations-modal')">&times;</span>
-        <h3>Recommended Adjustments</h3>
+        <button type="button" class="close" onclick="closeModal()" aria-label="Close recommendations">&times;</button>
+        <h3 id="recommendations-title">Recommended Adjustments</h3>
         <form id="recommendation-form"></form>
         <button onclick="confirmRecommendations()">Confirm Selections</button>
         </div>
@@ -1188,7 +1214,7 @@
   <!-- Add Custom Adjustment Modal -->
     <div id="custom-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="custom-modal-title">
       <div class="modal-content">
-        <span class="close" onclick="closeModal('custom-modal')" aria-label="Close">&times;</span>
+        <button type="button" class="close" onclick="closeModal()" aria-label="Close">&times;</button>
         <h3 id="custom-modal-title">Add custom adjustment</h3>
         <div class="inline-edit">
           <label>
@@ -1201,24 +1227,42 @@
           </label>
           <div>
             <button id="custom-add-btn">Add</button>
-            <button type="button" onclick="closeModal('custom-modal')">Cancel</button>
+            <button type="button" onclick="closeModal()">Cancel</button>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Settings Modal -->
-    <div id="settingsModal" class="modal hidden">
-    <div class="modal-content">
-        <span class="close" id="closeSettings">&times;</span>
-        <h3>Accessibility & Display Settings</h3>
+  <!-- Settings Modal -->
+    <div
+      id="settingsModal"
+      class="modal hidden"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="settingsTitle"
+    >
+      <div class="modal-content">
+        <button
+          type="button"
+          class="close"
+          id="closeSettings"
+          aria-label="Close settings"
+        >
+          &times;
+        </button>
 
-        <button id="resetSettings" class="clear-filters-button" style="margin-bottom: 1rem;">
-        Reset to Defaults
+        <h3 id="settingsTitle">Accessibility & Display Settings</h3>
+
+        <button
+          id="resetSettings"
+          class="clear-filters-button"
+          style="margin-bottom: 1rem;"
+        >
+          Reset to Defaults
         </button>
 
         <div class="settings-grid">
-        <div>Theme</div>
+        <label for="themeSelect">Display theme</label>
         <div>
             <select id="themeSelect">
             <option value="default">Default</option>
@@ -1227,7 +1271,7 @@
             </select>
         </div>
 
-        <div>Font Size</div>
+        <label for="fontSizeSelect">Font size</label>
         <div>
             <select id="fontSizeSelect">
             <option value="normal">Normal</option>
@@ -1237,10 +1281,10 @@
         </div>
 
         <div>Focus Mode</div>
-        <div><button class="toggle-pill" id="toggleFocus">Off</button></div>
+        <button class="toggle-pill" id="toggleFocus" aria-pressed="false" aria-label="Focus mode"> Off </button>
 
         <div>Highlight Clickable Elements</div>
-        <div><button class="toggle-pill" id="toggleClickable">Off</button></div>
+        <button class="toggle-pill" id="toggleClickable" aria-pressed="false" aria-label="Highlight clickable elements"> Off </button>
         </div>
     </div>
     </div>
@@ -1414,8 +1458,6 @@ function saveSummary() {
 
       container.appendChild(wrapper);
     }
-
-
 
   // List of suggested adjustments
 const adjustments = [
@@ -1799,7 +1841,6 @@ const adjustments = [
 
   // Track filter state: {tagName: true/false/null}
   const filterStates = {};
-
 
 
   // 🧩 Adjustment rendering
@@ -2241,7 +2282,7 @@ function setupToggleAllButton() {
 
       customItems.unshift({ id: uid(), title, detail });
       t.value = ''; d.value = '';
-      closeModal('custom-modal');
+      closeModal();
 
       // Section appears (expanded by default) and shows the new item
       customCollapsed = false;
@@ -2282,12 +2323,66 @@ function setupToggleAllButton() {
         document.getElementById("adjustment-list").scrollIntoView({ behavior: "smooth" });
     }
 
-    function openModal(id) {
-        document.getElementById(id).classList.remove("hidden");
+    function handleQuizComplete() {
+        closeModal();
+
+        const recommendationsModal = document.getElementById('recommendations-modal');
+        const quizTrigger = document.getElementById('link-quiz');
+
+        openModal(recommendationsModal, quizTrigger);
+
+        generateRecommendations();
     }
 
-    function closeModal(id) {
-        document.getElementById(id).classList.add("hidden");
+    // Modals!
+    let activeModal = null;
+    let lastFocusedElement = null;
+
+    function openModal(modal, trigger) {
+        if (!modal) return;
+        lastFocusedElement = trigger || document.activeElement;
+        activeModal = modal;
+        modal.classList.remove("hidden");
+        const focusable = modal.querySelectorAll(
+            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        if (focusable.length) {
+            focusable[0].focus();
+        }
+        document.addEventListener("keydown", handleModalKeydown);
+    }
+
+    function closeModal() {
+        if (!activeModal) return;
+        activeModal.classList.add("hidden");
+        document.removeEventListener("keydown", handleModalKeydown);
+        if (lastFocusedElement) {
+            lastFocusedElement.focus();
+        }
+        activeModal = null;
+    }
+
+    function handleModalKeydown(e) {
+      if (!activeModal) return;
+      if (e.key === "Escape") {
+        e.preventDefault();
+        closeModal();
+        return;
+      }
+      if (e.key !== "Tab") return;
+      const focusable = activeModal.querySelectorAll(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      );
+      if (!focusable.length) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
     }
 
     function generateRecommendations() {
@@ -2323,9 +2418,6 @@ function setupToggleAllButton() {
             form.appendChild(desc);
             }
         });
-
-        closeModal('quiz-modal');
-        openModal('recommendations-modal');
     }
 
     function confirmRecommendations() {
@@ -2336,12 +2428,10 @@ function setupToggleAllButton() {
             checked: true,
             comment: selectedAdjustmentsState[name]?.comment || ''
             };
-    });
-
+        });
     renderAdjustments();
-    closeModal('recommendations-modal');
-
     document.getElementById("adjustment-list").scrollIntoView({ behavior: "smooth" });
+    closeModal();
     }
 
   // Save and load from JSON text
@@ -2510,18 +2600,20 @@ function setupToggleAllButton() {
             }
         });
 
-        closeModal('quiz-modal');
-        openModal('recommendations-modal');
     }
 
   // === Top card link behaviours (reuse your existing functions) ===
-    document.getElementById('link-quiz').addEventListener('click', (e)=>{ e.preventDefault(); openModal('quiz-modal'); });
+    const quizTrigger = document.getElementById('link-quiz');
+    const quizModal = document.getElementById('quiz-modal');
+    quizTrigger?.addEventListener('click', (e) => {e.preventDefault(); openModal(quizModal, quizTrigger); });
+
 
     // Open custom adjustments modal
-    document.getElementById('link-custom').addEventListener('click', (e)=>{
-      e.preventDefault();
-      openModal('custom-modal');
-      document.getElementById('custom-title-input').focus();
+    const customTrigger = document.getElementById('link-custom');
+    const customModal = document.getElementById('custom-modal');
+    customTrigger?.addEventListener('click', (e) => {
+        e.preventDefault();
+        openModal(customModal, customTrigger);
     });
 
     document.getElementById('link-save-pdf').addEventListener('click', (e)=>{ e.preventDefault(); saveSummary(); });
@@ -2643,12 +2735,9 @@ function setupToggleAllButton() {
     const resetSettings = document.getElementById("resetSettings");
 
     settingsToggle?.addEventListener("click", () => {
-    settingsModal.classList.toggle("hidden");
+        openModal(settingsModal, settingsToggle);
     });
-
-    closeSettings?.addEventListener("click", () => {
-    settingsModal.classList.add("hidden");
-    });
+    closeSettings?.addEventListener("click", closeModal);
 
     // --- Toggles and selects ---
     const themeSelect = document.getElementById("themeSelect");
@@ -2660,11 +2749,11 @@ function setupToggleAllButton() {
     const savedSettings = JSON.parse(localStorage.getItem("arccSettings")) || {};
     applySettings(savedSettings);
 
-// --- Sync dropdown UI with stored theme on page load ---
-if (savedSettings.theme) {
-  const themeSelect = document.getElementById("themeSelect");
-  if (themeSelect) themeSelect.value = savedSettings.theme;
-}
+    // --- Sync dropdown UI with stored theme on page load ---
+    if (savedSettings.theme) {
+      const themeSelect = document.getElementById("themeSelect");
+      if (themeSelect) themeSelect.value = savedSettings.theme;
+    }
 
     // --- Handle toggle buttons ---
     function setupToggle(button, settingKey) {
@@ -2672,11 +2761,24 @@ if (savedSettings.theme) {
         button.classList.toggle("on");
         const isOn = button.classList.contains("on");
         button.textContent = isOn ? "On" : "Off";
+        button.setAttribute("aria-pressed", String(isOn));
         savedSettings[settingKey] = isOn;
         applySettings(savedSettings);
         saveSettings();
     });
     }
+
+    // --- Initialise toggle button states from saved settings ---
+    [
+      { button: toggleFocus, key: "focusMode" },
+      { button: toggleClickable, key: "highlightClickable" }
+    ].forEach(({ button, key }) => {
+      if (!button) return;
+      const isOn = !!savedSettings[key];
+      button.classList.toggle("on", isOn);
+      button.textContent = isOn ? "On" : "Off";
+      button.setAttribute("aria-pressed", String(isOn));
+    });
 
     // --- Handle dropdowns ---
     themeSelect.addEventListener("change", () => {
@@ -2914,6 +3016,7 @@ interactiveEls.forEach(el => {
     (() => {
     let currentStep = 0;
     let overlay, tooltip;
+    let tutorialActive = false;
 
     // === Tutorial steps (your original text) ===
     const steps = [
@@ -2926,6 +3029,7 @@ interactiveEls.forEach(el => {
     ];
 
     function startTutorial() {
+        tutorialActive = true;
         currentStep = 0;
         showStep();
     }
@@ -2965,11 +3069,17 @@ interactiveEls.forEach(el => {
         // Tooltip
         tooltip = document.createElement('div');
         tooltip.className = 'tutorial-tooltip';
+        tooltip.setAttribute('role', 'dialog');
+        tooltip.setAttribute('aria-modal', 'true');
+        tooltip.setAttribute('aria-labelledby', 'tutorial-text');
+
         tooltip.innerHTML = `
-        <p>${step.text}</p>
+        <p id="tutorial-text">${step.text}</p>
         <div class="tutorial-buttons">
             <button class="skip">Exit tutorial</button>
-            <button class="next">${currentStep === steps.length - 1 ? 'Finish' : 'Next'}</button>
+            <button class="next">
+                ${currentStep === steps.length - 1 ? 'Finish' : 'Next'}
+            </button>
         </div>
         `;
         document.body.appendChild(tooltip);
@@ -2984,6 +3094,26 @@ interactiveEls.forEach(el => {
 
         // Automatically focus the "Next" button for keyboard users
         tooltip.querySelector('.next').focus();
+
+        // Trap focus inside the tutorial tooltip
+        const focusable = tooltip.querySelectorAll(
+            'button, [href], input, [tabindex]:not([tabindex="-1"])'
+        );
+
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+
+        tooltip.addEventListener('keydown', (e) => {
+            if (e.key === 'Tab') {
+                if (e.shiftKey && document.activeElement === first) {
+                    e.preventDefault();
+                    last.focus();
+                } else if (!e.shiftKey && document.activeElement === last) {
+                    e.preventDefault();
+                    first.focus();
+                }
+            }
+        });
 
         // Allow arrow keys to move between buttons
         const buttons = tooltip.querySelectorAll('.tutorial-buttons button');
@@ -3016,13 +3146,15 @@ interactiveEls.forEach(el => {
         tooltip?.remove();
         document.querySelectorAll('.tutorial-highlight').forEach(el => el.classList.remove('tutorial-highlight'));
         overlay = tooltip = null;
+        tutorialActive = false;
     }
 
     // Allow closing the tutorial with the Escape key
     document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-        endTutorial();
-    }
+        if (tutorialActive && e.key === 'Escape') {
+            e.preventDefault();
+            endTutorial();
+        }
     });
 
     // Launch tutorial
