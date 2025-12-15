@@ -1884,7 +1884,8 @@ function renderAdjustments() {
                 <input type="checkbox" class="adjustment" value="${adj.name}">
                 Include this adjustment
                 </label>
-                <textarea class="adjustment-detail" placeholder="Additional details..." style="display: none;"></textarea>
+                <textarea class="adjustment-detail" placeholder="Additional details..."
+                    aria-label="Additional details for ${adj.name}" style="display: none;"> </textarea>
             </div>
         `;
         container.appendChild(div);
