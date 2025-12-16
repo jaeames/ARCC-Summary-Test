@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en-GB">
 <head>
-  <title>ARCC</title>
+  <title>ARCC 3.3 Test</title>
 
 <!-- ===================== -->
 <!--  CSS STYLES START  -->
@@ -455,6 +455,8 @@
       box-shadow: inset 0 0 0 1px rgba(0,0,0,.28);
     }
 
+
+    
     /* small screens: let the cards wrap 2x2 */
     @media (max-width: 900px){
       .tool-row{ grid-template-columns: repeat(2, 1fr); }
@@ -853,6 +855,47 @@
     color: #000 !important; /* make all inner text black when hovered/focused */
     }
 
+    /* ===== Dark mode – keyboard + mouse ===== */
+    [data-theme="dark"] .tool-link:hover,
+    [data-theme="dark"] .tool-link:focus-visible {
+    background: #444;
+    color: #fff;
+    outline: 3px solid #fff;
+    outline-offset: 2px;
+    }
+
+    /* ===== High contrast – keyboard + mouse ===== */
+    [data-theme="highContrast"] .tool-link:hover,
+    [data-theme="highContrast"] .tool-link:focus-visible,
+    [data-theme="highContrast"] .filter-checkbox:hover,
+    [data-theme="highContrast"] .filter-checkbox:focus-visible,
+
+[data-theme="highContrast"] .tool-link:hover,
+[data-theme="highContrast"] .tool-link:focus-within {
+  background: #FFD700 !important;
+  color: #000 !important;
+}
+
+[data-theme="highContrast"] .tool-link:hover *,
+[data-theme="highContrast"] .tool-link:focus-within * {
+  color: #000 !important;
+}
+
+/* Strong focus ring for keyboard navigation */
+.filter-group input[type="checkbox"]:focus-visible + span,
+[data-theme="highContrast"] .filter-group label:focus-within {
+  outline: 3px solid #00FFFF; /* cyan */
+  outline-offset: 4px;
+}
+
+/* High contrast mode: stronger, guaranteed */
+[data-theme="highContrast"] .filter-group input[type="checkbox"]:focus-visible + span,
+[data-theme="highContrast"] .filter-group label:focus-within {
+  outline: 4px solid #FFD700;
+  outline-offset: 4px;
+}
+
+
     /* === True Full-Page Focus Mode === */
     #focus-bar {
     position: fixed;
@@ -955,6 +998,7 @@
     </div>
     <a class="tool-link" href="#" id="link-tutorial">Start Tutorial</a>
     <a class="tool-link" href="#" id="link-quiz">Where to start?</a>
+    <a class="tool-link" href="#" id="link-about">What is ARCC?</a>
     </section>
 
   <section class="tool-card" id="custom-card">
@@ -985,7 +1029,7 @@
     </div>
     <a class="tool-link" href="#" id="link-experience">Your experience on placement (survey)</a>
     <a class="tool-link" href="#" id="link-SSHINE">SSHINE (website)</a>
-    <a class="tool-link" href="mailto:james.eames.sshine@gmail.com?subject=ARCC%20Feedback%20or%20Bug%20Report&body=Please%20describe%20the%20issue%20or%20suggestion%20below:%0D%0A%0D%0A">Feedback / Bug reports</a>
+    <a class="tool-link" href="mailto:james.eames.sshine@gmail.com?subject=ARCC%20Feedback%20or%20Bug%20Report&body=Please%20describe%20the%20issue%20or%20suggestion%20below:%0D%0A%0D%0A" id="link-feedback-email">Feedback / Bug reports</a>
 <!--    <a class="tool-link" href="#" id="link-feedback">ARCC feedback</a> -->
   </section>
 </div>
@@ -993,17 +1037,6 @@
 <!-- Floating filter toggle button -->
 <button id="filtersToggle" class="fab filters-fab" aria-label="Toggle Filters Panel" aria-expanded="false">
   <span class="material-icons" aria-hidden="true">filter_alt</span>
-</button>
-
-<!-- Floating Settings button -->
-<button
-  id="settingsToggle"
-  class="fab settings-fab"
-  aria-haspopup="dialog"
-  aria-controls="settingsModal"
-  aria-label="Open settings"
->
-  <span class="material-icons" aria-hidden="true">settings</span>
 </button>
 
 <!-- Backdrop that dims the background when filters are open -->
@@ -1044,14 +1077,14 @@
       <div class="filter-column">
         <h3 class="collapsible-heading">Adjustment Types</h3>
         <div class="filter-group" data-group="type">
-          <span class="filter-checkbox" data-tag="assistive technology">☐ Assistive Technology</span><br>
-          <span class="filter-checkbox" data-tag="environment">☐ Environment</span><br>
-          <span class="filter-checkbox" data-tag="equipment">☐ Equipment</span><br>
-          <span class="filter-checkbox" data-tag="information">☐ Information</span><br>
-          <span class="filter-checkbox" data-tag="physical accessibility">☐ Physical Accessibility</span><br>
-          <span class="filter-checkbox" data-tag="practices">☐ Practices</span><br>
-          <span class="filter-checkbox" data-tag="software">☐ Software</span><br>
-          <span class="filter-checkbox" data-tag="support">☐ Support</span><br>
+          <label><input type="checkbox" class="filter-checkbox" data-tag="assistive technology"> Assistive Technology</label><br>
+          <label><input type="checkbox" class="filter-checkbox" data-tag="environment"> Environment</label><br>
+          <label><input type="checkbox" class="filter-checkbox" data-tag="equipment"> Equipment</label><br>
+          <label><input type="checkbox" class="filter-checkbox" data-tag="information"> Information</label><br>
+          <label><input type="checkbox" class="filter-checkbox" data-tag="physical accessibility"> Physical Accessibility</label><br>
+          <label><input type="checkbox" class="filter-checkbox" data-tag="practices"> Practices</label><br>
+          <label><input type="checkbox" class="filter-checkbox" data-tag="software"> Software</label><br>
+          <label><input type="checkbox" class="filter-checkbox" data-tag="support"> Support</label><br>
         </div>
       </div>
 
@@ -1059,19 +1092,19 @@
       <div class="filter-column">
         <h3 class="collapsible-heading">Challenges</h3>
         <div class="filter-group" data-group="challenge">
-          <span class="filter-checkbox" data-tag="auditory">☐ Auditory</span><br>
-          <span class="filter-checkbox" data-tag="communication">☐ Communication</span><br>
-          <span class="filter-checkbox" data-tag="concentration">☐ Concentration</span><br>
-          <span class="filter-checkbox" data-tag="coordination">☐ Coordination</span><br>
-          <span class="filter-checkbox" data-tag="fatigue">☐ Fatigue</span><br>
-          <span class="filter-checkbox" data-tag="information processing">☐ Information Processing</span><br>
-          <span class="filter-checkbox" data-tag="maths and numbers">☐ Maths and Numbers</span><br>
-          <span class="filter-checkbox" data-tag="memory">☐ Memory</span><br>
-          <span class="filter-checkbox" data-tag="organisation and time keeping">☐ Organisation and Time Keeping</span><br>
-          <span class="filter-checkbox" data-tag="reading and writing">☐ Reading and Writing</span><br>
-          <span class="filter-checkbox" data-tag="sensory">☐ Sensory</span><br>
-          <span class="filter-checkbox" data-tag="tics">☐ Tics</span><br>
-          <span class="filter-checkbox" data-tag="uncertainty">☐ Uncertainty</span><br>
+          <label><input type="checkbox" class="filter-checkbox" data-tag="auditory"> Auditory</label><br>
+          <label><input type="checkbox" class="filter-checkbox" data-tag="communication"> Communication</label><br>
+          <label><input type="checkbox" class="filter-checkbox" data-tag="concentration"> Concentration</label><br>
+          <label><input type="checkbox" class="filter-checkbox" data-tag="coordination"> Coordination</label><br>
+          <label><input type="checkbox" class="filter-checkbox" data-tag="fatigue"> Fatigue</label><br>
+          <label><input type="checkbox" class="filter-checkbox" data-tag="information processing"> Information Processing</label><br>
+          <label><input type="checkbox" class="filter-checkbox" data-tag="maths and numbers"> Maths and Numbers</label><br>
+          <label><input type="checkbox" class="filter-checkbox" data-tag="memory"> Memory</label><br>
+          <label><input type="checkbox" class="filter-checkbox" data-tag="organisation and time keeping"> Organisation and Time Keeping</label><br>
+          <label><input type="checkbox" class="filter-checkbox" data-tag="reading and writing"> Reading and Writing</label><br>
+          <label><input type="checkbox" class="filter-checkbox" data-tag="sensory"> Sensory</label><br>
+          <label><input type="checkbox" class="filter-checkbox" data-tag="tics"> Tics</label><br>
+          <label><input type="checkbox" class="filter-checkbox" data-tag="uncertainty"> Uncertainty</label><br>
         </div>
       </div>
 
@@ -1079,19 +1112,19 @@
       <div class="filter-column">
         <h3 class="collapsible-heading">Professions</h3>
         <div class="filter-group" data-group="professions">
-          <span class="filter-checkbox" data-tag="nursing">☐ Nursing</span><br>
-          <span class="filter-checkbox" data-tag="pharmacy">☐ Pharmacy</span><br>
-          <span class="filter-checkbox" data-tag="dietetics">☐ Dietetics</span><br>
-          <span class="filter-checkbox" data-tag="ODP">☐ ODP</span><br>
-          <span class="filter-checkbox" data-tag="orthoptics">☐ Orthoptics</span><br>
-          <span class="filter-checkbox" data-tag="OT">☐ OT</span><br>
-          <span class="filter-checkbox" data-tag="prosthetics and orthotics">☐ Prosthetics and Orthotics</span><br>
-          <span class="filter-checkbox" data-tag="paramedicine">☐ Paramedicine</span><br>
-          <span class="filter-checkbox" data-tag="physiotherapy">☐ Physiotherapy</span><br>
-          <span class="filter-checkbox" data-tag="podiatry">☐ Podiatry</span><br>
-          <span class="filter-checkbox" data-tag="radiography">☐ Radiography</span><br>
-          <span class="filter-checkbox" data-tag="SLT">☐ SLT</span><br>
-          <span class="filter-checkbox" data-tag="therapeutic arts">☐ Therapeutic Arts</span><br>
+          <label><input type="checkbox" class="filter-checkbox" data-tag="nursing"> Nursing</label><br>
+          <label><input type="checkbox" class="filter-checkbox" data-tag="pharmacy"> Pharmacy</label><br>
+          <label><input type="checkbox" class="filter-checkbox" data-tag="dietetics"> Dietetics</label><br>
+          <label><input type="checkbox" class="filter-checkbox" data-tag="ODP"> ODP</label><br>
+          <label><input type="checkbox" class="filter-checkbox" data-tag="orthoptics"> Orthoptics</label><br>
+          <label><input type="checkbox" class="filter-checkbox" data-tag="OT"> OT</label><br>
+          <label><input type="checkbox" class="filter-checkbox" data-tag="prosthetics and orthotics"> Prosthetics and Orthotics</label><br>
+          <label><input type="checkbox" class="filter-checkbox" data-tag="paramedicine"> Paramedicine</label><br>
+          <label><input type="checkbox" class="filter-checkbox" data-tag="physiotherapy"> Physiotherapy</label><br>
+          <label><input type="checkbox" class="filter-checkbox" data-tag="podiatry"> Podiatry</label><br>
+          <label><input type="checkbox" class="filter-checkbox" data-tag="radiography"> Radiography</label><br>
+          <label><input type="checkbox" class="filter-checkbox" data-tag="SLT"> SLT</label><br>
+          <label><input type="checkbox" class="filter-checkbox" data-tag="therapeutic arts"> Therapeutic Arts</label><br>
         </div>
       </div>
     </div> <!-- end of filters-side -->
@@ -1201,6 +1234,49 @@
       </div>
       
     
+    <!-- What is ARCC? modal -->
+    <div id="about-modal" class="modal hidden"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="aboutTitle">
+
+    <div class="modal-content">
+        <button type="button" class="close" onclick="closeModal()" aria-label="Close">
+        &times;
+        </button>
+
+        <h3 id="aboutTitle">What is ARCC?</h3>
+
+        <p>
+        ARCC is a self-guided tool to help healthcare students (and their practice educators) identify and explain adjustments that may support them while on practice placements.
+        </p>
+
+        <p>
+        It is intended to help you prepare for conversations with universities, placement providers, or supervisors by giving you language and structure to describe your needs.
+        </p>
+
+        <p>
+        The tool itself does not make decisions or approvals, but it supports you in advocating for yourself and your learning, and in navigating formal adjustment or disclosure processes.
+        </p>
+
+        <div class="modal-actions">
+        <button type="button" onclick="closeModal()">Close</button>
+        </div>
+    </div>
+    </div>
+
+
+  <!-- Floating Settings button -->
+    <button
+      id="settingsToggle"
+      class="fab settings-fab"
+      aria-haspopup="dialog"
+      aria-controls="settingsModal"
+      aria-label="Open settings"
+    >
+      <span class="material-icons" aria-hidden="true">settings</span>
+    </button>
+
   <!-- Recommendations Modal -->
     <div id="recommendations-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="recommendations-title">
         <div class="modal-content">
@@ -1288,6 +1364,50 @@
         </div>
     </div>
     </div>
+
+<div id="survey-data-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="surveyDataTitle">
+  <div class="modal-content">
+    <button type="button" class="close" onclick="closeModal()" aria-label="Close">&times;</button>
+    <h3 id="surveyDataTitle">Before you continue</h3>
+
+    <p>
+      This survey does not ask for personal data.
+    </p>
+    <p>
+      It is hosted using Google Forms, which may collect technical information such as IP address and submission time.
+    </p>
+    <p>
+      Responses are used to improve the ARCC tool and may be shared in anonymised or aggregated form.
+    </p>
+
+    <div class="modal-actions">
+      <button id="continue-survey">Continue to survey</button>
+      <button type="button" onclick="closeModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div id="email-data-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="emailDataTitle">
+  <div class="modal-content">
+    <button type="button" class="close" onclick="closeModal()" aria-label="Close">&times;</button>
+    <h3 id="emailDataTitle">Before you continue</h3>
+
+    <p>
+      Feedback and bug reports are sent by email to the project creator.
+      Your email address and message content will be visible to the recipient.
+    </p>
+
+    <p>
+      Please do not include sensitive personal or patient information.
+    </p>
+
+    <div class="modal-actions">
+      <button id="continue-email">Continue to email</button>
+      <button type="button" onclick="closeModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
 
 
 <!-- ========================== -->
@@ -2386,6 +2506,30 @@ function setupToggleAllButton() {
       }
     }
 
+const surveyLink = document.getElementById('link-experience');
+surveyLink?.addEventListener('click', (e) => {
+  e.preventDefault();
+  openModal(document.getElementById('survey-data-modal'), surveyLink);
+});
+
+document.getElementById('continue-survey')?.addEventListener('click', () => {
+  closeModal();
+  window.open('https://forms.gle/9fDUYGoPfQEC6K4M6', '_blank');
+});
+
+const emailLink = document.getElementById('link-feedback-email');
+emailLink?.addEventListener('click', (e) => {
+  e.preventDefault();
+  openModal(document.getElementById('email-data-modal'), emailLink);
+});
+
+document.getElementById('continue-email')?.addEventListener('click', () => {
+  closeModal();
+  window.location.href =
+    'mailto:james.eames.sshine@gmail.com?subject=ARCC%20Feedback%20or%20Bug%20Report&body=Please%20describe%20the%20issue%20or%20suggestion%20below:%0D%0A%0D%0A';
+});
+
+
     function generateRecommendations() {
         const selectedTags = new Set();
         const quizCheckboxes = document.querySelectorAll('#quiz-modal input[type="checkbox"]:checked');
@@ -2608,6 +2752,15 @@ function setupToggleAllButton() {
     const quizModal = document.getElementById('quiz-modal');
     quizTrigger?.addEventListener('click', (e) => {e.preventDefault(); openModal(quizModal, quizTrigger); });
 
+  // === What is ARCC? modal ===
+    const aboutLink = document.getElementById('link-about');
+    const aboutModal = document.getElementById('about-modal');
+
+    aboutLink?.addEventListener('click', (e) => {
+    e.preventDefault();
+    openModal(aboutModal, aboutLink);
+    });
+
 
     // Open custom adjustments modal
     const customTrigger = document.getElementById('link-custom');
@@ -2661,11 +2814,6 @@ function setupToggleAllButton() {
   });
 })();
 
-    document.getElementById('link-experience')?.addEventListener('click', (e) => {
-    e.preventDefault();
-    window.open('https://forms.gle/9fDUYGoPfQEC6K4M6', '_blank');
-    });
-
     document.getElementById('link-SSHINE')?.addEventListener('click', (e) => {
     e.preventDefault();
     window.open('https://sshinestudents.wordpress.com/', '_blank');
@@ -2690,6 +2838,14 @@ function setupToggleAllButton() {
         CC BY-NC 4.0 Licence
       </a> — you may share and adapt it, but not use it commercially.
     </p>
+    <p>
+    ARCC runs entirely in your web browser and does not collect or store personal data.
+    This site is hosted on GitHub Pages, which may collect basic technical information in line with its
+    <a href="https://docs.github.com/en/site-policy/privacy-policies/github-privacy-statement" target="_blank" style="color: #78206E; text-decoration: none;">
+      privacy policy
+    </a>.
+    Files you save or download remain on your device. External links and surveys are governed by their own data and privacy policies.
+  </p>
   </footer>
 
 <script>
@@ -2883,56 +3039,6 @@ document.querySelectorAll(
         el.style.color = "#000";
         el.style.border = "2px solid #FFD700";
     });
-    
-// Hover & focus effects for high contrast mode
-document.querySelectorAll(
-  ".adjustment-box:hover, .filter-checkbox:hover, .tool-link:hover"
-).forEach(el => {
-  el.style.background = "#222"; // dark grey hover
-  el.style.color = "#FFD700";
-});
-
-document.querySelectorAll(
-  ".adjustment-box:focus-within, .filter-checkbox:focus, .tool-link:focus-visible"
-).forEach(el => {
-  el.style.outline = "2px solid #00FFFF"; // cyan focus outline
-  el.style.outlineOffset = "2px";
-});
-
-const interactiveEls = document.querySelectorAll(
-  ".adjustment-box, .filter-checkbox, .tool-link"
-);
-
-interactiveEls.forEach(el => {
-    el.addEventListener("mouseenter", () => {
-        if (settings.theme === "highContrast") {
-        el.style.background = "#FFD700"; // bright yellow
-        el.style.color = "#000";         // black text
-        }
-    });
-    el.addEventListener("mouseleave", () => {
-    if (settings.theme === "highContrast") {
-        el.style.background = "#000";
-        // restore original colour based on element type
-        if (el.classList.contains("tool-link")) {
-        el.style.color = "#00FFFF"; // cyan for links
-        } else {
-        el.style.color = "#FFD700"; // yellow for other items
-        }
-    }
-    });
-    el.addEventListener("focus", () => {
-        if (settings.theme === "highContrast") {
-        el.style.outline = "2px solid #00FFFF"; // cyan ring
-        el.style.outlineOffset = "2px";
-    }
-    });
-    el.addEventListener("blur", () => {
-        if (settings.theme === "highContrast") {
-        el.style.outline = "none";
-    }
-    });
-});
 
     } else {
     document.documentElement.setAttribute("data-theme", "default");
@@ -3013,19 +3119,21 @@ interactiveEls.forEach(el => {
     });
 </script>
 
+
+
 <script>
     (() => {
     let currentStep = 0;
     let overlay, tooltip;
     let tutorialActive = false;
 
-    // === Tutorial steps (your original text) ===
+    // === Tutorial steps ===
     const steps = [
         { selector: '.filters-side', text: 'These are your filters. Use them to include or exclude different types of adjustments or challenges.', top: 250, left: 400 },
         { selector: '.adjustments-side', text: 'Here you’ll see all the suggested adjustments that match your filters.', top: 250, left: 900 },
         { selector: '#custom-card', text: 'Use “Add custom adjustments” to include your own ideas or notes.', top: 260, left: 300 },
         { selector: '#adjustment-search', text: 'Search for a specific adjustment here.', top: 300, left: 850 },
-        { selector: '#save-card', text: 'You can save your selected adjustments to PDF or file, and give feedback using the survey links.', top: 310, left: 450 },
+        { selector: '#save-card', text: 'You can save your selected adjustments to PDF or file, and give feedback using the survey links.<br><br>Changes are not saved automatically! If you leave the page without saving, they will be lost.', top: 310, left: 450 },
         { undim: true, text: '(And you can change accessibility settings by clicking on this cog icon!) ⚙️', top: 500, left: 1250 }
     ];
 
