@@ -2081,7 +2081,7 @@ function renderAdjustments() {
 
             div.innerHTML = `
                 <button type="button" class="adjustment-header${saved && saved.checked ? ' selected' : ''}">
-                    <strong>${adj.name}${saved && saved.checked ? ' ✔️' : ''}</strong>
+                    ${adj.name}${saved && saved.checked ? ' ✔️' : ''}
                 </button>
                 <div class="adjustment-details" style="display: none;">
                 <p class="adjustment-description">${adj.description}</p>
